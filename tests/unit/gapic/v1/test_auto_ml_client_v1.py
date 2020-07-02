@@ -31,6 +31,8 @@ from google.cloud.automl_v1.proto import service_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
+from google.api_core import grpc_helpers
+from google.api_core import operations_v1
 
 
 class MultiCallableStub(object):
@@ -989,3 +991,12 @@ class TestAutoMlClient(object):
         paged_list_response = client.list_model_evaluations(parent, filter_)
         with pytest.raises(CustomException):
             list(paged_list_response)
+
+    def test_get_operation_status(self):
+        channel = grpc_helpers.ChannelStub()
+        client = automl_v1.AutoMlClient(channel=channel)
+        response = client.get_operation_status("name")
+
+        assert len(channel.GetOperation.requests) == 1
+        assert channel.GetOperation.requests[0].name == "name"
+        assert response == channel.GetOperation.response

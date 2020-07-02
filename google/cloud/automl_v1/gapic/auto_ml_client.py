@@ -1896,3 +1896,16 @@ class AutoMlClient(object):
             response_token_field="next_page_token",
         )
         return iterator
+
+    def get_operation_status(self, operation_full_id):
+        """Get operation status.
+        Args:
+            operation_full_id: Full name of a operation.
+                For example, the name of your operation is
+                projects/<projectId>/locations/us-central1/operations/<operationId>.
+        """
+        response = self.transport._operations_client.get_operation(
+            operation_full_id
+        )
+
+        print('Operation status: {}'.format(response))
